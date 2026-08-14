@@ -53,13 +53,13 @@ window.signIn = async () => {
       .eq('dob', dob)     // exact match
       .eq('roll_number', roll)
       .single()
-
+    const UserId = data.id;
     if (error || !data) {
       console.error('Sign-in error:', error)
       if (errorBox) errorBox.textContent = 'Date of Birth or Roll Number is incorrect or not registered.'
     } else {
       localStorage.setItem('user', JSON.stringify(data))
-      window.location.href = 'dashboard.html'
+      window.location.href = "dashboard.html?userId=" + UserId;
     }
   } catch (err) {
     console.error('Unexpected sign-in error:', err)
