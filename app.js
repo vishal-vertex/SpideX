@@ -14,27 +14,58 @@ const supabase = createClient(supabaseUrl, supabaseKey)
 //})
 
 window.signIn = async () => {
-  const name = document.getElementById('name').value.trim().toLowerCase()
-  const roll = document.getElementById('roll').value.trim()
+  const dobEl = document.getElementById('dob')
+  const rollEl = document.getElementById('roll')
   const errorBox = document.getElementById('error')
+  const signInBtn = document.getElementById('signinBtn')
 
-  if (!name || !roll) {
-    errorBox.textContent = 'Please fill in all fields.'
+  const dob = dobEl ? dobEl.value.trim() : ''
+  const roll = rollEl ? rollEl.value.trim() : ''
+
+  // clear previous error
+  if (errorBox) errorBox.textContent = ''
+
+  if (!dob || !roll) {
+    if (errorBox) errorBox.textContent = 'Please fill in all fields.'
     return
   }
 
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .ilike('name', name)     // case-insensitive match
-    .eq('roll_number', roll) // exact match
-    .single()
+  // Basic DOB validation (YYYY-MM-DD)
+  const dobRegex = /^\d{4}-\d{2}-\d{2}$/
+  if (!dobRegex.test(dob) || isNaN(new Date(dob).getTime())) {
+    if (errorBox) errorBox.textContent = 'Please enter Date of Birth in YYYY-MM-DD format.'
+    return
+  }
 
-  if (error || !data) {
-    errorBox.textContent = 'Name or Roll Number is incorrect or not registered.'
-  } else {
-    localStorage.setItem('user', JSON.stringify(data))
-    window.location.href = 'dashboard.html'
+  // Basic roll validation: allow alphanumeric and common punctuation, minimum 2 chars
+  const rollRegex = /^[A-Za-z0-9\-_.]{2,}$/
+  if (!rollRegex.test(roll)) {
+    if (errorBox) errorBox.textContent = 'Please enter a valid Roll Number.'
+    return
+  }
+
+  if (signInBtn) signInBtn.disabled = true
+
+  try {
+    const { data, error } = await supabase
+      .from('users')
+      .select('*')
+      .eq('dob', dob)     // exact match
+      .eq('roll_number', roll)
+      .single()
+
+    if (error || !data) {
+      console.error('Sign-in error:', error)
+      if (errorBox) errorBox.textContent = 'Date of Birth or Roll Number is incorrect or not registered.'
+    } else {
+      localStorage.setItem('user', JSON.stringify(data))
+      window.location.href = 'dashboard.html'
+    }
+  } catch (err) {
+    console.error('Unexpected sign-in error:', err)
+    if (errorBox) errorBox.textContent = 'An unexpected error occurred. Please try again.'
+  } finally {
+    if (signInBtn) signInBtn.disabled = false
   }
 }
 
