@@ -59,7 +59,7 @@ window.signIn = async () => {
       if (errorBox) errorBox.textContent = 'Date of Birth or Roll Number is incorrect or not registered.'
     } else {
       localStorage.setItem('user', JSON.stringify(data))
-      window.location.href = "dashboard.html?userId=" + UserId + randomNumber(1,100);
+      window.location.href = "dashboard.html?userId=02ncwej864dr13ssd" + UserId;
     }
   } catch (err) {
     console.error('Unexpected sign-in error:', err)
