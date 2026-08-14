@@ -1,0 +1,130 @@
+<!-- files.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Files</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #000000, #660000);
+      color: #fff;
+      padding: 20px;
+    }
+    h2 {
+      margin-bottom: 20px;
+      color: #ff4d4d;
+    }
+    .file-list {
+      list-style: none;
+      padding: 0;
+    }
+    .file-list li {
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 12px 20px;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 10px rgba(255, 0, 0, 0.4);
+    }
+    .file-name {
+      flex: 1;
+    }
+    .btn-group {
+      display: flex;
+      gap: 10px;
+    }
+    .file-list button {
+      background: #ff0000;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      color: #fff;
+      cursor: pointer;
+    }
+    .file-list button:hover {
+      background: #cc0000;
+    }
+  </style>
+</head>
+<body>
+  <h2 id="title">Loading Files...</h2>
+  <ul id="fileList" class="file-list"></ul>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+    const supabase = createClient('https://oxqpwocwlfqfadsyoquh.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94cXB3b2N3bGZxZmFkc3lvcXVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5NjA3MTUsImV4cCI6MjA2OTUzNjcxNX0.BLiPR-uZd4YG6-GSfMnb3AfweMypeOABS3reGu6jvG0');
+
+    const params = new URLSearchParams(window.location.search);
+    const bucket = params.get('bucket');
+    const subject = params.get('subject') || 'Files';
+
+    document.getElementById('title').textContent = `${subject} - Files`;
+
+    const { data, error } = await supabase.storage.from(bucket).list('uploads', {
+      limit: 100,
+      sortBy: { column: 'name', order: 'asc' }
+    });
+
+    const fileList = document.getElementById('fileList');
+
+    if (error) {
+      fileList.innerHTML = `<li>Error loading files: ${error.message}</li>`;
+    } else if (!data || data.length === 0) {
+      fileList.innerHTML = `<li>No files found in uploads/</li>`;
+    } else {
+      for (const file of data) {
+        const li = document.createElement('li');
+
+        const fileName = document.createElement('span');
+        fileName.textContent = file.name.replace(/^[^_]*_/, ''); // ✅ remove prefix
+        fileName.classList.add('file-name');
+
+        const btnGroup = document.createElement('div');
+        btnGroup.classList.add('btn-group');
+
+        // Open button
+        const openBtn = document.createElement('button');
+        openBtn.textContent = 'Open';
+        openBtn.onclick = async () => {
+          const { data: urlData, error: urlErr } = await supabase
+            .storage
+            .from(bucket)
+            .createSignedUrl(`uploads/${file.name}`, 60);
+          if (urlErr) return alert('Open failed: ' + urlErr.message);
+          window.open(urlData.signedUrl, '_blank');
+        };
+
+        // Download button
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = 'Download';
+        downloadBtn.onclick = async () => {
+          const { data: fileData, error: downErr } = await supabase
+            .storage
+            .from(bucket)
+            .download(`uploads/${file.name}`);
+          if (downErr) return alert('Download failed: ' + downErr.message);
+          const url = URL.createObjectURL(fileData);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = file.name.replace(/^[^_]*_/, ''); // Optional: cleaned name on download
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        };
+
+        btnGroup.appendChild(openBtn);
+        btnGroup.appendChild(downloadBtn);
+
+        li.appendChild(fileName);
+        li.appendChild(btnGroup);
+        fileList.appendChild(li);
+      }
+    }
+  </script>
+</body>
+</html>

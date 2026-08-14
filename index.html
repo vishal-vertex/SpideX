@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SpideX</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #000000, #660000);
+      color: #fff;
+      line-height: 1.6;
+    }
+
+    /* --- Splash Screen --- */
+    #splash {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    #splash img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    header {
+      text-align: center;
+      padding: 20px;
+    }
+
+    header h1 {
+      font-size: 2.5rem;
+      color: #ff3333;
+      text-shadow: 0 0 8px #ff0000;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .login-box {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      box-shadow: 0 0 25px rgba(255, 0, 0, 0.4), 0 0 8px rgba(255, 0, 0, 0.2) inset;
+      backdrop-filter: blur(12px);
+      text-align: center;
+      padding: 25px;
+      margin: 20px auto;
+      max-width: 360px;
+    }
+
+    .btn {
+      display: block;
+      width: 100%;
+      background-color: #ff0000;
+      color: #fff;
+      padding: 14px;
+      margin: 12px 0;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #cc0000;
+      box-shadow: 0 0 10px #ff0000, 0 0 20px #ff0000 inset;
+    }
+
+    .tagline {
+      margin-top: 15px;
+      font-size: 1rem;
+      color: #ddd;
+      opacity: 0.9;
+    }
+
+    section {
+      margin-top: 40px;
+      text-align: left;
+      padding: 20px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    }
+
+    section h2 {
+      color: #ff3333;
+      margin-bottom: 12px;
+      text-shadow: 0 0 6px #ff0000;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    footer a {
+      color: #ff9999;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      header h1 { font-size: 2rem; }
+      section { padding: 15px; }
+      .login-box { max-width: 90%; }
+    }
+  </style>
+  
+  <!-- Adsense Script -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1235932563567314"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+  <!-- 🔥 Splash Screen -->
+  <div id="splash">
+    <img src="firespider.gif" alt="Loading...">
+  </div>
+
+  <header id="mainContent" style="display:none;">
+    <h1>Welcome to SpideX</h1>
+  </header>
+
+  <main id="mainContent2" style="display:none;">
+    <!-- 🔥 Login FIRST -->
+    <div class="login-box">
+      <h2>Login to Continue</h2>
+      <button class="btn" onclick="admin()">Admin Login</button>
+      <button class="btn" onclick="student()">Student Login</button>
+    </div>
+
+    <!-- ✅ Tagline just below login -->
+    <p class="tagline">Made by a 2nd Year AI Student</p>
+
+    <!-- ✅ Content for AdSense BELOW -->
+    <section>
+      <h2>About SpideX</h2>
+      <p>
+        SpideX is a student-friendly platform designed to provide quick access to 
+        study materials, admin updates, and resources. The goal of this portal is to 
+        simplify communication and help students access their files and assignments 
+        with ease.
+      </p>
+    </section>
+
+    <section>
+      <h2>Why SpideX?</h2>
+      <ul>
+        <li>Fast and secure access to study resources.</li>
+        <li>Direct communication between students and admins.</li>
+        <li>Organized material downloads.</li>
+      </ul>
+    </section>
+
+    <!-- 📘 Free Resources -->
+    <!-- 📘 Free Resources -->
+<section>
+  <h2>Free Study Resources</h2>
+  <p>Here are some free notes and study guides related to Artificial Intelligence & Data Science:</p>
+  <ul>
+    <li><a href='/maths' style='color:#ff6666;'>📄 Important Maths Formulas</a></li>
+    <li><a href='/ai' style='color:#ff6666;'>📄 Introduction to Artificial Intelligence</a></li>
+    <li><a href='/datascience' style='color:#ff6666;'>📄 Basics of Data Science & Analytics</a></li>
+  </ul>
+</section>
+
+<!-- 📰 Blog / Updates -->
+<section>
+  <h2>Latest Updates</h2>
+  <article>
+    <h3 style="color:#ff9999;">🤖 Future of Artificial Intelligence</h3>
+    <p>AI is not just theory anymore — from chatbots to autonomous vehicles, it’s everywhere. 
+    In SpideX, we aim to provide easy-to-understand AI resources for students.</p>
+  </article>
+  <article>
+    <h3 style="color:#ff9999;">📊 Why Data Science Matters</h3>
+    <p>Data is the new oil. Understanding how to collect, clean, and analyze data is essential 
+    for every AI student. Our Data Science section gives you the basics to get started.</p>
+  </article>
+</section>
+
+  </main>
+
+  <footer id="mainContent3" style="display:none;">
+    <p>
+      <a href='/aboutus'>About Us</a> |
+      <a href='/privacy'>Privacy Policy</a> |
+      <a href='/terms'>Terms & Conditions</a> |
+      <a href='/contactus'>Contact Us</a>
+    </p>
+    <small>© 2025 SpideX Portal. All Rights Reserved.</small>
+  </footer>
+
+  <script>
+    // Hide splash after 3 seconds
+    setTimeout(() => {
+      document.getElementById('splash').style.display = 'none';
+      document.getElementById('mainContent').style.display = 'block';
+      document.getElementById('mainContent2').style.display = 'block';
+      document.getElementById('mainContent3').style.display = 'block';
+    }, 2000); // kept as 3s
+
+    function admin() {
+      window.location.href = 'admin.html';
+    }
+
+    function student() {
+      window.location.href = 'signin.html';
+    }
+  </script>
+</body>
+</html>

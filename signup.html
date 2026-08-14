@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpideX Sign Up</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #000000, #660000);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .signup-card {
+      width: 90%;
+      max-width: 360px;
+      aspect-ratio: 3 / 4;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 15px;
+      padding: 30px 25px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .signup-card h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #ff0000;
+      font-size: 1.6rem;
+    }
+
+    .signup-card input {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .signup-card input::placeholder {
+      color: #ccc;
+    }
+
+    .signup-card button {
+      background-color: #ff0000;
+      color: white;
+      padding: 12px;
+      width: 70%;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin: 10px auto;
+      display: block;
+      transition: background-color 0.3s ease;
+    }
+
+    .signup-card button:hover {
+      background-color: #cc0000;
+    }
+
+    .signup-card p {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .signup-card a {
+      color: #ffcccc;
+      text-decoration: none;
+    }
+
+    #signupError {
+      color: #ff6666;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 480px) {
+      .signup-card {
+        aspect-ratio: auto;
+        padding: 25px 20px;
+      }
+
+      .signup-card h1 {
+        font-size: 1.4rem;
+      }
+    }
+    
+  </style>
+</head>
+<body>
+  <div class="signup-card" id="signupScreen">
+    <h1>New Register</h1>
+    <input type="text" id="signupName" placeholder="Name" />
+    <input type="number" id="signupRoll" placeholder="Roll Number" />
+    <input type="date" id="signupDOB" placeholder="Date of Birth" />
+    <input type="number" id="signupMobile" placeholder="Mobile Number (Optional)" />
+    <input type="email" id="signupEmail" placeholder="Email (Optional)" />
+    <button onclick="signUp()">Sign Up</button>
+    <p><a href='/signin'>Back to Sign In</a></p>
+    <div id="signupError"></div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

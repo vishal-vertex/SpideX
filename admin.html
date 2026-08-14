@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #000000, #660000);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .login-card {
+      width: 90%;
+      max-width: 360px;
+      aspect-ratio: 3 / 4; /* Changed here */
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 15px;
+      padding: 30px 25px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .login-card h2 {
+      margin-bottom: 30px;
+      text-align: center;
+      font-size: 1.8rem;
+      color: #ff0000;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+      color: #ffcccc;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      font-size: 1rem;
+      outline: none;
+    }
+
+    .form-group input::placeholder {
+      color: #ccc;
+    }
+
+    .login-btn {
+      background-color: #ff0000;
+      color: white;
+      padding: 12px;
+      width: 70%;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin: 10px auto 0 auto;
+      display: block;
+    }
+
+    .login-btn:hover {
+      background-color: #cc0000;
+    }
+
+    @media (max-width: 480px) {
+      .login-card {
+        padding: 25px 20px;
+        aspect-ratio: auto;
+      }
+
+      .login-card h2 {
+        font-size: 1.5rem;
+      }
+
+      .login-btn {
+        width: 70%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <h2>Admin Login</h2>
+    <form onsubmit="return waste(event)">
+      <div class="form-group">
+        <label for="adminName">Admin Name</label>
+        <input type="text" id="adminName" name="adminName" placeholder="Enter admin name" required />
+      </div>
+      <div class="form-group">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" name="adminPassword" placeholder="Enter password" required />
+      </div>
+      <button type="submit" class="login-btn">Sign In</button>
+    </form>
+  </div>
+
+  <script type="module">
+  import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+  const supabaseUrl = 'https://oxqpwocwlfqfadsyoquh.supabase.co'; // 🔁 Replace with your Supabase URL
+  const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94cXB3b2N3bGZxZmFkc3lvcXVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5NjA3MTUsImV4cCI6MjA2OTUzNjcxNX0.BLiPR-uZd4YG6-GSfMnb3AfweMypeOABS3reGu6jvG0'; // 🔁 Replace with your public anon key
+  const supabase = createClient(supabaseUrl, supabaseKey);
+
+  async function waste(event) {
+    event.preventDefault();
+
+    const name = document.getElementById('adminName').value.trim();
+    const password = document.getElementById('adminPassword').value.trim();
+
+    if (!name || !password) {
+      alert('Please enter both fields');
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from('admin')
+      .select('*')
+      .eq('name', name)
+      .eq('password', password);
+
+    if (error) {
+      alert("Database error. Please try again.");
+      console.error(error);
+      return;
+    }
+
+    if (data.length > 0) {
+      // Valid login
+      window.location.href = 'adminDashboard.html';
+    } else {
+      // Invalid credentials
+      alert('Incorrect Username or Password entered');
+    }
+  }
+
+  // Expose waste() to global scope so HTML can call it
+  window.waste = waste;
+</script>
+
+</body>
+</html>

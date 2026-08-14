@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #000000, #660000);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    h2{
+      padding: 20px;
+      color: #ff4d4d;
+    }
+
+    header {
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      font-size: 2rem;
+      color: #ff0000;
+      border-bottom: 1px solid rgba(255, 0, 0, 0.4);
+      flex-shrink: 0;
+    }
+
+    main {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .menu {
+      width: 100%;
+      padding: 20px;
+      min-height: 70px;
+      text-align: center;
+      font-size: 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 8px 16px rgba(255, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .menu:hover {
+      background: rgba(255, 0, 0, 0.3);
+    }
+
+    footer {
+      background: rgba(255, 0, 0, 0.2);
+      padding: 15px 10px;
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    footer a {
+      color: #ff4d4d;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+
+    @media (max-width: 480px) {
+      .menu {
+        font-size: 1.3rem;
+        padding: 22px;
+        min-height: 80px;
+      }
+      footer a {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Student Dashboard</header>
+  <h2 id="infoLine">No more Inforamtion</h2>
+  <main>
+    <div class="menu" id="subject1" data-sub="bucket1">Subject1</div>
+    <div class="menu" id="subject2" data-sub="bucket2">Subject2</div>
+    <div class="menu" id="subject3" data-sub="bucket3">Subject3</div>
+    <div class="menu" id="subject4" data-sub="bucket4">Subject4</div>
+    <div class="menu" id="subject5" data-sub="bucket5">Subject5</div>
+    <div class="menu" id="subject6" data-sub="bucket6">Subject6</div>
+    <div class="menu" id="subject7" data-sub="bucket7">Subject7</div>
+    <div class="menu" id="subject8" data-sub="bucket8">Others</div>
+    <div class="menu" onclick="location.href='game.html'">Game</div>
+    <div class="menu" onclick="location.href='aboutApp.html'">About App</div>
+    <div class="menu" onclick="location.href='aboutDev.html'">About Developer</div>
+  </main>
+
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabaseUrl = 'https://oxqpwocwlfqfadsyoquh.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94cXB3b2N3bGZxZmFkc3lvcXVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5NjA3MTUsImV4cCI6MjA2OTUzNjcxNX0.BLiPR-uZd4YG6-GSfMnb3AfweMypeOABS3reGu6jvG0';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    async function loadSubjectNames() {
+      const { data, error } = await supabase
+        .from('subNames')
+        .select('*')
+        .limit(1);
+
+      if (error) {
+        console.error('Error fetching subject names:', error);
+        return;
+      }
+
+      if (data && data.length > 0) {
+        const row = data[0];
+        document.getElementById('infoLine').innerText = row.infoLine || 'Info unavailable';
+
+        for (let i = 1; i <= 8; i++) {
+          const el = document.getElementById(`subject${i}`);
+          const name = row[`subject${i}`];
+          if (el && name) {
+            el.innerText = name;
+          }
+        }
+      }
+    }
+
+    loadSubjectNames();
+
+    document.querySelectorAll('.menu[data-sub]').forEach(el => {
+      el.addEventListener('click', () => {
+        const bucket = el.getAttribute('data-sub');
+        window.location.href = `files.html?bucket=${bucket}&subject=${encodeURIComponent(el.textContent)}`;
+      });
+    });
+  </script>
+</body>
+</html>

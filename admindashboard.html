@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #000000, #660000);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background-color: rgba(255, 0, 0, 0.1);
+      padding: 20px 40px;
+      text-align: center;
+      font-size: 2rem;
+      font-weight: bold;
+      border-bottom: 1px solid rgba(255, 0, 0, 0.4);
+      color: #ff4d4d;
+    }
+
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .upload-section {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    label {
+      display: block;
+      margin: 20px 0 8px;
+      font-size: 1.1rem;
+      color: #ffcccc;
+    }
+
+    select, input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: none;
+      background-color: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 14px;
+      font-size: 1.1rem;
+      background-color: #ff0000;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #cc0000;
+    }
+
+    @media (max-width: 480px) {
+      header {
+        font-size: 1.5rem;
+        padding: 15px;
+      }
+
+      label, select, input, button {
+        font-size: 1rem;
+      }
+    }
+  </style>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabaseUrl = 'https://oxqpwocwlfqfadsyoquh.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94cXB3b2N3bGZxZmFkc3lvcXVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM5NjA3MTUsImV4cCI6MjA2OTUzNjcxNX0.BLiPR-uZd4YG6-GSfMnb3AfweMypeOABS3reGu6jvG0';
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('uploadForm');
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const bucket = document.getElementById('bucket').value;
+        const file = document.getElementById('file').files[0];
+
+        if (!file || !bucket) {
+          alert('Please select a file and a bucket');
+          return;
+        }
+
+        const filePath = `uploads/${Date.now()}_${file.name}`;
+        const { data, error } = await supabase.storage
+          .from(bucket)
+          .upload(filePath, file);
+
+        if (error) {
+          alert('Upload failed: ' + error.message);
+        } else {
+          alert(`File uploaded to ${bucket} successfully!`);
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+  <header>
+    Admin Dashboard
+  </header>
+  <main>
+    <section class="upload-section">
+      <form id="uploadForm">
+        <label for="bucket">Choose Bucket</label>
+        <select id="bucket" required>
+          <option value="" disabled selected>Select a bucket...</option>
+          <option value="bucket1">Subject1</option>
+          <option value="bucket2">Subject2</option>
+          <option value="bucket3">Subject3</option>
+          <option value="bucket4">Subject4</option>
+          <option value="bucket5">Subject5</option>
+          <option value="bucket6">Subject6</option>
+          <option value="bucket7">Subject7</option>
+          <option value="bucket8">bucket8</option>
+          <option value="bucket9">bucket9</option>
+          <option value="bucket10">bucket10</option>
+        </select>
+
+        <label for="file">Select File or Image</label>
+        <input type="file" id="file" required />
+
+        <button type="submit">Upload</button>
+      </form>
+    </section>
+  </main>
+</body>
+</html>
