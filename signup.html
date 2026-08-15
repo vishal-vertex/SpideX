@@ -112,11 +112,16 @@
 <body>
   <div class="signup-card" id="signupScreen">
     <h1>New Register</h1>
+    <label for="signupName">Name</label>
     <input type="text" id="signupName" placeholder="Name" />
+    <label for="signupRoll">Roll Number</label>
     <input type="number" id="signupRoll" placeholder="Roll Number" />
+    <label for="signupDOB">Date of Birth</label>
     <input type="date" id="signupDOB" placeholder="Date of Birth" />
-    <input type="number" id="signupMobile" placeholder="Mobile Number (Optional)" />
-    <input type="email" id="signupEmail" placeholder="Email (Optional)" />
+    <label for="signupMobile">Mobile Number (Optional)</label>
+    <input type="number" id="signupMobile" placeholder="Mobile Number" />
+    <label for="signupEmail">Email (Optional)</label>
+    <input type="email" id="signupEmail" placeholder="Email" />
     <button onclick="signUp()">Sign Up</button>
     <p><a href='/signin'>Back to Sign In</a></p>
     <div id="signupError"></div>
